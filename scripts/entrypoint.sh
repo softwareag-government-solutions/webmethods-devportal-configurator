@@ -30,8 +30,8 @@ if [ "${settings_usergroups_configure}" == "true" ]; then
 fi
 
 ## config roles
-if [ "${settings_userroles_configure}" == "true" ]; then
-    exec_ansible_playbook config_userroles.yaml
+if [ "${settings_teams_configure}" == "true" ]; then
+    exec_ansible_playbook config_teams.yaml
 fi
 
 logger_with_headers $LOGGER_INFO "Developer Portal Configurator Done !!"

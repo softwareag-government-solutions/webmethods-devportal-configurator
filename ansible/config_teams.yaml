@@ -13,7 +13,7 @@
       with_fileglob:
         - vars/common.yaml
         - vars/rest_connect.yaml
-        - vars/settings_userroles.yaml
+        - vars/settings_teams.yaml
 
 ################################################################
 ## set configs via REST APIs
@@ -33,21 +33,21 @@
     
     - name: set initial list so it's not undefined
       set_fact:
-         _userroles_list: []
+         _teams_list: []
 
     - name: append each item template to list
       set_fact:
-        _userroles_list: "{{ _userroles_list + [ _userroles_template ] }}"
+        _teams_list: "{{ _teams_list + [ _teams_template ] }}"
       loop: "{{ _index_items }}"
       loop_control:
         loop_var: index_item
 
     - ansible.builtin.debug:
-        var: _userroles_list
+        var: _teams_list
     
     - include_role:
         name: developerportal-rest-configurator
       vars:
         configs_action: teams/save-multiple
-        configs_enabled: "{{ vars_userroles_enabled }}"
-        rvar_devportal_rest_teams: "{{ _userroles_list }}"
+        configs_enabled: "{{ vars_teams_enabled }}"
+        rvar_devportal_rest_teams: "{{ _teams_list }}"

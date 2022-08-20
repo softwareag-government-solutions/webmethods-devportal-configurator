@@ -1,0 +1,16 @@
+---
+
+_teams_indices_finder_prefix: "settings_teams_"
+_teams_indices_finder_suffix: "_name"
+_index_items_regex_pattern: "{{ common_index_items_regex_pattern | format( _teams_indices_finder_prefix, _teams_indices_finder_suffix) }}"
+
+vars_teams_enabled: "{{ lookup('env', '%sconfigure' | format(_teams_indices_finder_prefix)) | default('false',true) }}"
+vars_teams_ignore_errors: "{{ lookup('env', '%sconfigure_ignore_errors' | format(_teams_indices_finder_prefix)) | default(vars_default_ignore_errors,true) }}"
+
+_teams_template:
+  lookup_id:
+    name: "{{ lookup('env', '%s%s%s' | format(_teams_indices_finder_prefix,index_item,_usergroups_indices_finder_suffix)) | default('',true) }}"
+  data:
+    name: "{{ lookup('env', '%s%s%s' | format(_teams_indices_finder_prefix,index_item,_usergroups_indices_finder_suffix)) | default('',true) }}"
+    description: "{{ lookup('env', '%s%s_description' | format(_teams_indices_finder_prefix,index_item)) | default('',true) }}"
+    summary: "{{ lookup('env', '%s%s_summary' | format(_teams_indices_finder_prefix,index_item)) | default('',true) }}"
