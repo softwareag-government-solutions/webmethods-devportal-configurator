@@ -1,2 +1,42 @@
 # webmethods-devportal-configurator
-A configurator for webMethods Developer Portal over REST admin API
+
+A container that can easily configure various functions of webMethods Developer Portal over REST APIs.
+All inputs to the container are environment variables for easy usage.
+
+## Supported Configs / Actions
+
+Doc TBD
+
+## Build the container image
+
+docker build -t softwareag-government-solutions/webmethods-devportal-configurator:10.11-latest --build-arg BASE_IMAGE=redhat/ubi8 .
+
+## How it's made
+
+To build on the ansible roles already created for webMethods Developer Portal, this container also uses Ansible to operate the various REST calls (important to note that to respect container immutability, ansible is NOT used to "remote" into the devportal container in order to update files etc...)
+
+For the various REST calls, this project makes use of the existing Ansible roles [sagdevops-ansible-developer-portal](https://github.com/SoftwareAG/sagdevops-ansible-developer-portal) to perform all the needed REST calls to webMethods Developer Portal.
+
+Authors
+--------------------------------------------
+
+Fabien Sanglier
+- Emails: [@Software AG](mailto:fabien.sanglier@softwareag.com) // [@Software AG Government Solutions](mailto:fabien.sanglier@softwareaggov.com)
+- Github: 
+  - [Fabien Sanglier](https://github.com/lanimall)
+  - [Fabien Sanglier @ SoftwareAG Government Solutions](https://github.com/fabien-sanglier-saggs)
+
+Licensing - Apache-2.0
+--------------------------------------------
+
+This project is Licensed under the Apache License, Version 2.0 (the "License");
+You may not use this project except in compliance with the License.
+You may obtain a copy of the License at
+
+[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
