@@ -1,17 +1,16 @@
 ---
 
-vars_userroles_enabled: "{{ lookup('env', 'settings_userroles_configure') | default('false',true) }}"
-vars_userroles_ignore_errors: "{{ lookup('env', 'settings_userroles_configure_ignore_errors') | default(vars_default_ignore_errors,true) }}"
-
 _userroles_indices_finder_prefix: "settings_userroles_"
 _userroles_indices_finder_suffix: "_name"
 _index_items_regex_pattern: "{{ common_index_items_regex_pattern | format( _userroles_indices_finder_prefix, _userroles_indices_finder_suffix) }}"
 
+vars_userroles_enabled: "{{ lookup('env', '%sconfigure' | format(_userroles_indices_finder_prefix)) | default('false',true) }}"
+vars_userroles_ignore_errors: "{{ lookup('env', '%sconfigure_ignore_errors' | format(_userroles_indices_finder_prefix)) | default(vars_default_ignore_errors,true) }}"
+
 _userroles_template:
-  name: "{{ lookup('env', 'settings_userroles_%s_name' | format(index_item)) | default('',true) }}"
-  description: "{{ lookup('env', 'settings_userroles_%s_description' | format(index_item)) | default('',true) }}"
-  privilege: "{{ lookup('env', 'settings_userroles_%s_privilegecode' | format(index_item)) | default('',true) }}"
-  groupnames: "{{ (lookup('env', 'settings_userroles_%s_groupnames' | format(index_item)) | default('',true)).split(';')|map('trim')|select()|list }}"
-  teamAdmin:
-    usernames: "{{ (lookup('env', 'settings_userroles_%s_teamadmin_usernames' | format(index_item)) | default('',true)).split(';')|map('trim')|select()|list }}"
-    groupnames: "{{ (lookup('env', 'settings_userroles_%s_teamadmin_groupnames' | format(index_item)) | default('',true)).split(';')|map('trim')|select()|list }}"
+  lookup_id:
+    name: "{{ lookup('env', '%s%s%s' | format(_userroles_indices_finder_prefix,index_item,_usergroups_indices_finder_suffix)) | default('',true) }}"
+  data:
+    name: "{{ lookup('env', '%s%s%s' | format(_userroles_indices_finder_prefix,index_item,_usergroups_indices_finder_suffix)) | default('',true) }}"
+    description: "{{ lookup('env', '%s%s_description' | format(_userroles_indices_finder_prefix,index_item)) | default('',true) }}"
+    summary: "{{ lookup('env', '%s%s_summary' | format(_userroles_indices_finder_prefix,index_item)) | default('',true) }}"

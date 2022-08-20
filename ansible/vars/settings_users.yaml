@@ -1,7 +1,7 @@
 ---
 
 _users_indices_finder_prefix: "settings_users_"
-_users_indices_finder_suffix: "_username"
+_users_indices_finder_suffix: "_userid"
 _index_items_regex_pattern: "{{ common_index_items_regex_pattern | format( _users_indices_finder_prefix, _users_indices_finder_suffix) }}"
 
 vars_users_enabled: "{{ lookup('env', '%sconfigure' | format(_users_indices_finder_prefix)) | default('false',true) }}"
@@ -9,9 +9,9 @@ vars_users_ignore_errors: "{{ lookup('env', '%sconfigure_ignore_errors' | format
 
 _users_template:
   lookup_id:
-    name: "{{ lookup('env', '%s%s_username' | format(_users_indices_finder_prefix,index_item)) | default('',true) }}"
+    name: "{{ lookup('env', '%s%s%s' | format(_users_indices_finder_prefix,index_item,_users_indices_finder_suffix)) | default('',true) }}"
   data:
-    username: "{{ lookup('env', '%s%s_username' | format(_users_indices_finder_prefix,index_item)) | default('',true) }}"
+    username: "{{ lookup('env', '%s%s%s' | format(_users_indices_finder_prefix,index_item,_users_indices_finder_suffix)) | default('',true) }}"
     password: "{{ lookup('env', '%s%s_password' | format(_users_indices_finder_prefix,index_item)) | default('',true) }}"
     firstname: "{{ lookup('env', '%s%s_firstname' | format(_users_indices_finder_prefix,index_item)) | default('',true) }}"
     lastname: "{{ lookup('env', '%s%s_lastname' | format(_users_indices_finder_prefix,index_item)) | default('',true) }}"

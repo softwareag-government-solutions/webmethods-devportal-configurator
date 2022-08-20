@@ -44,10 +44,10 @@
 
     - ansible.builtin.debug:
         var: _userroles_list
-
+    
     - include_role:
         name: developerportal-rest-configurator
       vars:
-        configs_action: set-accessprofiles
+        configs_action: teams/save-multiple
         configs_enabled: "{{ vars_userroles_enabled }}"
-        rvar_apigateway_usermgt_accessprofiles: "{{ _userroles_list }}"
+        rvar_devportal_rest_teams: "{{ _userroles_list }}"
