@@ -1,0 +1,19 @@
+apiVersion: v2
+name: webmethods-devportal-configurator
+description: Configure webmethods devportal using simple environment variables - Configuration as Code for webmethods-devportal-configurator.
+home: https://github.com/saggs-cloudops/webmethods-devportal-configurator
+version: 1.0.0-SNAPSHOT
+appVersion: 1.0.0-SNAPSHOT
+maintainers:
+  - name: fabien sanglier
+    email: fabien.sanglier@softwareaggov.com
+    url: https://github.com/fabien-sanglier-saggs
+keywords:
+  - webmethods-devportal
+  - softwareag
+  - config
+  - configurator
+  - continuous-integration
+  - webmethods-devportal-configurator
+sources:
+  - https://github.com/saggs-cloudops/webmethods-devportal-configurator

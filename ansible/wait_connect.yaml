@@ -1,0 +1,45 @@
+---
+
+################################################################
+## Load the needed vars
+################################################################
+
+- name: Load vars
+  hosts: local
+  tasks:
+    - name: Include all vars files
+      include_vars:
+        file: "{{ item }}"
+      with_fileglob:
+        - vars/common.yaml
+        - vars/rest_connect.yaml
+
+################################################################
+## waiting for service running via port checking
+################################################################
+
+- name: Check the target ports to ensure valid state
+  hosts: local
+  become: true
+  become_user: "{{ webmethods_user }}"
+  tasks:
+    
+    ## wait for port to be available
+    - include_role:
+        name: check-remote-ports
+      vars:
+        rvar_validation_host: "{{ vars_validation_host }}"
+        rvar_validation_ports: "{{ vars_validation_ports }}"
+        rvar_validation_ports_timeout: "{{ vars_validation_ports_timeout }}"
+        rvar_async_timeout: "{{ common_async_timeout }}"
+        rvar_async_poll: "{{ common_async_poll }}"
+        rvar_async_retries: "{{ common_async_retries }}"
+        rvar_async_delay: "{{ common_async_delay }}"
+
+    ## also, wait for target service running
+    - name: Wait for the dev portal api endpoints to be fully up
+      include_role:
+        name: developerportal-rest-configurator
+      vars:
+        configs_action: monitoring/waitfor-ready
+        configs_enabled: "true"

@@ -1,0 +1,40 @@
+---
+
+## Global vars
+vars_default_ignore_errors: "{{ lookup('env', 'devportal_default_ignore_errors') | default('false',true) }}"
+
+##################### webmethods specifics
+webmethods_user: "{{ lookup('env', 'SAG_USER') | default('saguser',true) }}"
+webmethods_userid: "{{ lookup('env', 'SAG_USERID') | default('1724',true) }}"
+webmethods_group: "{{ lookup('env', 'SAG_GROUP') | default('saguser',true) }}"
+webmethods_groupid: "{{ lookup('env', 'SAG_GROUPID') | default('1724',true) }}"
+webmethods_install_dir: "{{ lookup('env', 'SAG_HOME') | default('/opt/softwareag',true) }}"
+
+##################### global values
+common_index_items_regex_pattern: "^%s([^_]+)%s$"
+_index_items: "{{ ansible_env.keys() | map('regex_search', _index_items_regex_pattern , '\\1') | flatten | select('string') | unique | sort }}"
+
+rvar_devportal_rest_scheme: "{{ vars_rest_protocol }}"
+rvar_devportal_rest_host: "{{ vars_rest_host }}"
+rvar_devportal_rest_port: "{{ vars_rest_port }}"
+rvar_devportal_rest_no_check_certs: "{{ vars_rest_no_check_certs }}"
+rvar_devportal_rest_apiversion: "v1"
+
+##################### async jobs defaults
+common_async_retries: 240
+common_async_delay: 10
+common_async_timeout: 2400
+common_async_poll: 0
+
+# the host to use for the port validation
+vars_validation_host: "{{ vars_rest_host }}"
+
+# the ports to check before doing anything
+vars_validation_ports:
+  - "{{ vars_rest_port }}"
+
+# special longer timeout because it can take a while for gateway to come up
+# especially for a new tenant provisioning (just to make sure we don't fail too early)
+vars_validation_ports_timeout: 900
+
+disable_no_log: true
