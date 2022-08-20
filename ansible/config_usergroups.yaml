@@ -1,0 +1,53 @@
+---
+
+################################################################
+## Load the needed vars
+################################################################
+
+- name: Load vars
+  hosts: local
+  tasks:
+    - name: Include all vars files
+      include_vars:
+        file: "{{ item }}"
+      with_fileglob:
+        - vars/common.yaml
+        - vars/rest_connect.yaml
+        - vars/settings_usergroups.yaml
+
+################################################################
+## set configs via REST APIs
+################################################################
+
+- hosts: local
+  become: true
+  become_user: "{{ webmethods_user }}"
+  run_once: true
+  tasks:
+
+    - ansible.builtin.debug:
+        var: "{{ item }}"
+      loop:
+        - _index_items_regex_pattern
+        - _index_items
+    
+    - name: set initial list so it's not undefined
+      set_fact:
+         _usergroups_list: []
+
+    - name: append each item template to list
+      set_fact:
+        _usergroups_list: "{{ _usergroups_list + [ _usergroups_template ] }}"
+      loop: "{{ _index_items }}"
+      loop_control:
+        loop_var: index_item
+
+    - ansible.builtin.debug:
+        var: _usergroups_list
+
+    - include_role:
+        name: developerportal-rest-configurator
+      vars:
+        configs_action: set-groups
+        configs_enabled: "{{ vars_usergroups_enabled }}"
+        rvar_apigateway_usermgt_groups: "{{ _usergroups_list }}"

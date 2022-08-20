@@ -1,0 +1,53 @@
+---
+
+################################################################
+## Load the needed vars
+################################################################
+
+- name: Load vars
+  hosts: local
+  tasks:
+    - name: Include all vars files
+      include_vars:
+        file: "{{ item }}"
+      with_fileglob:
+        - vars/common.yaml
+        - vars/rest_connect.yaml
+        - vars/settings_users.yaml
+
+################################################################
+## set configs via REST APIs
+################################################################
+
+- hosts: local
+  become: true
+  become_user: "{{ webmethods_user }}"
+  run_once: true
+  tasks:
+
+    - ansible.builtin.debug:
+        var: "{{ item }}"
+      loop:
+        - _index_items_regex_pattern
+        - _index_items
+    
+    - name: set initial list so it's not undefined
+      set_fact:
+         _users_list: []
+
+    - name: append each item template to list
+      set_fact:
+        _users_list: "{{ _users_list + [ _users_template ] }}"
+      loop: "{{ _index_items }}"
+      loop_control:
+        loop_var: index_item
+
+    - ansible.builtin.debug:
+        var: _users_list
+    
+    - include_role:
+        name: developerportal-rest-configurator
+      vars:
+        configs_action: users/save-multiple
+        configs_enabled: "{{ vars_users_enabled }}"
+        rvar_devportal_rest_users: "{{ _users_list }}"

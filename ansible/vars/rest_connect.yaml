@@ -1,16 +1,16 @@
 ---
 
 ##################### developer portal common
-vars_rest_protocol: "{{ lookup('env', 'devportal_connect_protocol') | default('http',true) }}"
-vars_rest_host: "{{ lookup('env', 'devportal_connect_host') | default('localhost',true) }}"
-vars_rest_port: "{{ lookup('env', 'devportal_connect_port') | default('5555',true) }}"
-vars_rest_no_check_certs: "{{ lookup('env', 'devportal_connect_no_check_certs') | default('false',true) }}"
+vars_rest_protocol: "{{ lookup('env', 'connect_protocol') | default('http',true) }}"
+vars_rest_host: "{{ lookup('env', 'connect_host') | default('localhost',true) }}"
+vars_rest_port: "{{ lookup('env', 'connect_port') | default('5555',true) }}"
+vars_rest_no_check_certs: "{{ lookup('env', 'connect_no_check_certs') | default('false',true) }}"
 
 ## rest login info
-vars_rest_login_username: "{{ lookup('env', 'devportal_connect_user') }}"
-vars_rest_login_password: "{{ lookup('env', 'devportal_connect_password') }}"
+vars_rest_login_username: "{{ lookup('env', 'connect_user') }}"
+vars_rest_login_password: "{{ lookup('env', 'connect_password') }}"
 
 ## update password
-vars_changepassword_enabled: "{{ lookup('env', 'devportal_changepassword_enabled') | default('false',true) }}"
-vars_changepassword_ignore_errors: "{{ lookup('env', 'devportal_changepassword_ignore_errors') | default(vars_default_ignore_errors,true) }}"
-vars_rest_login_password_old: "{{ lookup('env', 'devportal_changepassword_old') }}"
+vars_changepassword_enabled: "{{ lookup('env', 'changepassword_enabled') | default('false',true) }}"
+vars_changepassword_ignore_errors: "{{ lookup('env', 'changepassword_ignore_errors') | default(vars_default_ignore_errors,true) }}"
+vars_rest_login_password_old: "{{ lookup('env', 'changepassword_old') }}"

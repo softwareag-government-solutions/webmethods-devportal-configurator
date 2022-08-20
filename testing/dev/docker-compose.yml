@@ -30,11 +30,41 @@ services:
       - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
       - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-1:ro 
     environment: 
-      devportal_connect_host: devportal
-      devportal_connect_port: "8083"
-      devportal_connect_user: Administrator
-      devportal_connect_password: "somethingnew"
-      devportal_changepassword_enabled: "true"
-      devportal_changepassword_old: "manage"
+      connect_host: devportal
+      connect_port: "8083"
+      connect_user: Administrator
+      connect_password: "somethingnew"
+      changepassword_enabled: "true"
+      changepassword_old: "manage"
+    networks:
+      - stack
+
+  config_users:
+    image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
+    volumes:
+      - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
+      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-1:ro 
+    environment: 
+      connect_host: devportal
+      connect_port: "8083"
+      connect_user: Administrator
+      connect_password: "somethingnew"
+      settings_users_configure: "true"
+      settings_users_configure_ignore_errors: "false"
+      settings_users_0_username: user1
+      settings_users_0_password: password1
+      settings_users_0_firstname: firstname1
+      settings_users_0_lastname: lastname1
+      settings_users_0_locale: "en_US"
+      settings_users_1_username: user2
+      settings_users_1_password: password2
+      settings_users_1_firstname: firstname2
+      settings_users_1_lastname: lastname2
+      settings_users_1_locale: "en_US"
+      settings_users_2_username: user3
+      settings_users_2_password: password3
+      settings_users_2_firstname: firstname3
+      settings_users_2_lastname: lastname3
+      settings_users_2_locale: "en_US"
     networks:
       - stack
