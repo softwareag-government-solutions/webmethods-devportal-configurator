@@ -113,6 +113,8 @@ services:
       connect_port: "8083"
       connect_user: Administrator
       connect_password: "somethingnew"
+      changepassword_enabled: "true"
+      changepassword_old: "manage"
       settings_users_configure: "true"
       settings_users_0_userid: user1
       settings_users_0_password: password1
