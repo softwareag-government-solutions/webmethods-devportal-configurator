@@ -8,8 +8,7 @@ vars_users_enabled: "{{ lookup('env', '%sconfigure' | format(_users_indices_find
 vars_users_ignore_errors: "{{ lookup('env', '%sconfigure_ignore_errors' | format(_users_indices_finder_prefix)) | default(vars_default_ignore_errors,true) }}"
 
 _users_template:
-  lookup_id:
-    name: "{{ lookup('env', '%s%s%s' | format(_users_indices_finder_prefix,index_item,_users_indices_finder_suffix)) | default('',true) }}"
+  lookup_id: "{{ lookup('env', '%s%s%s' | format(_users_indices_finder_prefix,index_item,_users_indices_finder_suffix)) | default('',true) }}"
   data:
     username: "{{ lookup('env', '%s%s%s' | format(_users_indices_finder_prefix,index_item,_users_indices_finder_suffix)) | default('',true) }}"
     password: "{{ lookup('env', '%s%s_password' | format(_users_indices_finder_prefix,index_item)) | default('',true) }}"

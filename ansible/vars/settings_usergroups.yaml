@@ -8,8 +8,7 @@ vars_usergroups_enabled: "{{ lookup('env', '%sconfigure' | format(_usergroups_in
 vars_usergroups_ignore_errors: "{{ lookup('env', '%sconfigure_ignore_errors' | format(_usergroups_indices_finder_prefix)) | default(vars_default_ignore_errors,true) }}"
 
 _usergroups_template:
-  lookup_id:
-    name: "{{ lookup('env', '%s%s%s' | format(_usergroups_indices_finder_prefix,index_item,_usergroups_indices_finder_suffix)) | default('',true) }}"
+  lookup_id: "{{ lookup('env', '%s%s%s' | format(_usergroups_indices_finder_prefix,index_item,_usergroups_indices_finder_suffix)) | default('',true) }}"
   data:
     name: "{{ lookup('env', '%s%s%s' | format(_usergroups_indices_finder_prefix,index_item,_usergroups_indices_finder_suffix)) | default('',true) }}"
     description: "{{ lookup('env', '%s%s_description' | format(_usergroups_indices_finder_prefix,index_item)) | default('',true) }}"

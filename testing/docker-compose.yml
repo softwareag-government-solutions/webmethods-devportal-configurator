@@ -23,3 +23,134 @@ services:
       - transport.port=9300
     networks:
       - stack
+
+  config_changepassword:
+    image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
+    environment: 
+      connect_host: devportal
+      connect_port: "8083"
+      connect_user: Administrator
+      connect_password: "somethingnew"
+      changepassword_enabled: "true"
+      changepassword_old: "manage"
+    networks:
+      - stack
+
+  config_users:
+    image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
+    environment: 
+      connect_host: devportal
+      connect_port: "8083"
+      connect_user: Administrator
+      connect_password: "somethingnew"
+      settings_users_configure: "true"
+      settings_users_configure_ignore_errors: "false"
+      settings_users_0_userid: user1
+      settings_users_0_password: password1
+      settings_users_0_firstname: firstname1
+      settings_users_0_lastname: lastname1
+      settings_users_0_locale: "en_US"
+      settings_users_1_userid: user2
+      settings_users_1_password: password2
+      settings_users_1_firstname: firstname2
+      settings_users_1_lastname: lastname2
+      settings_users_1_locale: "en_US"
+      settings_users_2_userid: user3
+      settings_users_2_password: password3
+      settings_users_2_firstname: firstname3
+      settings_users_2_lastname: lastname3
+      settings_users_2_locale: "en_US"
+    networks:
+      - stack
+
+  config_usergroups:
+    image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
+    environment: 
+      connect_host: devportal
+      connect_port: "8083"
+      connect_user: Administrator
+      connect_password: "somethingnew"
+      settings_usergroups_configure: "true"
+      settings_usergroups_0_name: "usergroup1"
+      settings_usergroups_0_description: "description for usergroup1"
+      settings_usergroups_0_permissions_consumers: "true"
+      settings_usergroups_0_userids: "user1;user2;user3"
+      settings_usergroups_1_name: "usergroup2"
+      settings_usergroups_1_description: "description for usergroup2"
+      settings_usergroups_1_permissions_providers: "true"
+      settings_usergroups_1_userids: "user1"
+      settings_usergroups_2_name: "usergroup3"
+      settings_usergroups_2_description: "description for usergroup3"
+      settings_usergroups_2_permissions_administrators: "true"
+      settings_usergroups_2_userids: "user2"
+    networks:
+      - stack
+
+  config_teams:
+    image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
+    environment: 
+      connect_host: devportal
+      connect_port: "8083"
+      connect_user: Administrator
+      connect_password: "somethingnew"
+      settings_teams_configure: "true"
+      settings_teams_0_name: "team1"
+      settings_teams_0_description: "team1 description"
+      settings_teams_0_summary: "team1 summary"
+      settings_teams_1_name: "team2"
+      settings_teams_1_description: "team2 description"
+      settings_teams_1_summary: "team2 summary"
+      settings_teams_2_name: "team3"
+      settings_teams_2_description: "team3 description"
+      settings_teams_2_summary: "team3 summary"
+    networks:
+      - stack
+
+  config_allinone:
+    image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
+    environment: 
+      connect_host: devportal
+      connect_port: "8083"
+      connect_user: Administrator
+      connect_password: "somethingnew"
+      settings_users_configure: "true"
+      settings_users_0_userid: user1
+      settings_users_0_password: password1
+      settings_users_0_firstname: firstname1
+      settings_users_0_lastname: lastname1
+      settings_users_0_locale: "en_US"
+      settings_users_1_userid: user2
+      settings_users_1_password: password2
+      settings_users_1_firstname: firstname2
+      settings_users_1_lastname: lastname2
+      settings_users_1_locale: "en_US"
+      settings_users_2_userid: user3
+      settings_users_2_password: password3
+      settings_users_2_firstname: firstname3
+      settings_users_2_lastname: lastname3
+      settings_users_2_locale: "en_US"
+      settings_usergroups_configure: "true"
+      settings_usergroups_0_name: "usergroup1"
+      settings_usergroups_0_description: "description for usergroup1"
+      settings_usergroups_0_permissions_consumers: "true"
+      settings_usergroups_0_userids: "user1;user2;user3"
+      settings_usergroups_1_name: "usergroup2"
+      settings_usergroups_1_description: "description for usergroup2"
+      settings_usergroups_1_permissions_providers: "true"
+      settings_usergroups_1_userids: "user1"
+      settings_usergroups_2_name: "usergroup3"
+      settings_usergroups_2_description: "description for usergroup3"
+      settings_usergroups_2_permissions_administrators: "true"
+      settings_usergroups_2_userids: "user2"
+      settings_teams_configure: "true"
+      settings_teams_0_name: "team1"
+      settings_teams_0_description: "team1 description"
+      settings_teams_0_summary: "team1 summary"
+      settings_teams_1_name: "team2"
+      settings_teams_1_description: "team2 description"
+      settings_teams_1_summary: "team2 summary"
+      settings_teams_2_name: "team3"
+      settings_teams_2_description: "team3 description"
+      settings_teams_2_summary: "team3 summary"
+    networks:
+      - stack

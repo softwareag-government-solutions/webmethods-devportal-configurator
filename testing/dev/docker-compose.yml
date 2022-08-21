@@ -75,8 +75,8 @@ services:
       - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
       - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-1:ro 
     environment: 
-      connect_host: apigateway
-      connect_port: "5555"
+      connect_host: devportal
+      connect_port: "8083"
       connect_user: Administrator
       connect_password: "somethingnew"
       settings_usergroups_configure: "true"
@@ -101,22 +101,71 @@ services:
       - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
       - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-1:ro 
     environment: 
-      connect_host: apigateway
-      connect_port: "5555"
+      connect_host: devportal
+      connect_port: "8083"
       connect_user: Administrator
       connect_password: "somethingnew"
       settings_teams_configure: "true"
-      settings_teams_0_name: "custom-admin-role"
-      settings_teams_0_description: "admin role"
-      settings_teams_0_privilegecode: "111111111111111111111111111"
-      settings_teams_0_groupnames: "usergroup1"
-      settings_teams_1_name: "custom-apiproviders-role"
-      settings_teams_1_description: "api providers role"
-      settings_teams_1_privilegecode: "111111111111111111111111100"
-      settings_teams_1_groupnames: "usergroup1;usergroup2"
-      settings_teams_2_name: "custom-apiusers-role"
-      settings_teams_2_description: "api users role"
-      settings_teams_2_privilegecode: "10010010010100000001010001"
-      settings_teams_2_groupnames: "usergroup1;usergroup2;usergroup3"
+      settings_teams_0_name: "team1"
+      settings_teams_0_description: "team1 description"
+      settings_teams_0_summary: "team1 summary"
+      settings_teams_1_name: "team2"
+      settings_teams_1_description: "team2 description"
+      settings_teams_1_summary: "team2 summary"
+      settings_teams_2_name: "team3"
+      settings_teams_2_description: "team3 description"
+      settings_teams_2_summary: "team3 summary"
+    networks:
+      - stack
+
+  config_allinone:
+    image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
+    volumes:
+      - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
+      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-1:ro 
+    environment: 
+      connect_host: devportal
+      connect_port: "8083"
+      connect_user: Administrator
+      connect_password: "somethingnew"
+      settings_users_configure: "true"
+      settings_users_0_userid: user1
+      settings_users_0_password: password1
+      settings_users_0_firstname: firstname1
+      settings_users_0_lastname: lastname1
+      settings_users_0_locale: "en_US"
+      settings_users_1_userid: user2
+      settings_users_1_password: password2
+      settings_users_1_firstname: firstname2
+      settings_users_1_lastname: lastname2
+      settings_users_1_locale: "en_US"
+      settings_users_2_userid: user3
+      settings_users_2_password: password3
+      settings_users_2_firstname: firstname3
+      settings_users_2_lastname: lastname3
+      settings_users_2_locale: "en_US"
+      settings_usergroups_configure: "true"
+      settings_usergroups_0_name: "usergroup1"
+      settings_usergroups_0_description: "description for usergroup1"
+      settings_usergroups_0_permissions_consumers: "true"
+      settings_usergroups_0_userids: "user1;user2;user3"
+      settings_usergroups_1_name: "usergroup2"
+      settings_usergroups_1_description: "description for usergroup2"
+      settings_usergroups_1_permissions_providers: "true"
+      settings_usergroups_1_userids: "user1"
+      settings_usergroups_2_name: "usergroup3"
+      settings_usergroups_2_description: "description for usergroup3"
+      settings_usergroups_2_permissions_administrators: "true"
+      settings_usergroups_2_userids: "user2"
+      settings_teams_configure: "true"
+      settings_teams_0_name: "team1"
+      settings_teams_0_description: "team1 description"
+      settings_teams_0_summary: "team1 summary"
+      settings_teams_1_name: "team2"
+      settings_teams_1_description: "team2 description"
+      settings_teams_1_summary: "team2 summary"
+      settings_teams_2_name: "team3"
+      settings_teams_2_description: "team3 description"
+      settings_teams_2_summary: "team3 summary"
     networks:
       - stack
