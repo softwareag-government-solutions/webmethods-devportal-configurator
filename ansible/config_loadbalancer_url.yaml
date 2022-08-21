@@ -1,0 +1,34 @@
+---
+
+################################################################
+## Load the needed vars
+################################################################
+
+- name: Load vars
+  hosts: local
+  tasks:
+    - name: Include all vars files
+      include_vars:
+        file: "{{ item }}"
+      with_fileglob:
+        - vars/common.yaml
+        - vars/rest_connect.yaml
+        - vars/settings_loadbalancer_url.yaml
+
+################################################################
+## set configs via REST APIs
+################################################################
+
+- hosts: local
+  become: true
+  become_user: "{{ webmethods_user }}"
+  run_once: true
+  tasks:
+
+    - include_role:
+        name: developerportal-rest-configurator
+      vars:
+        configs_action: configurations/update
+        configs_enabled: "{{ vars_loadbalancerurl_enabled }}"
+        rvar_devportal_rest_configs_category: "{{ _loadbalancerurl_configuration_category }}"
+        rvar_devportal_rest_configs_kv_list: "{{ _loadbalancerurl_template }}"

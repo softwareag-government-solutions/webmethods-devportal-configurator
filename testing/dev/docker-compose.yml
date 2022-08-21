@@ -24,7 +24,7 @@ services:
     networks:
       - stack
 
-  config_changepassword:
+  changepassword:
     image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
     volumes:
       - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
@@ -36,6 +36,21 @@ services:
       connect_password: "somethingnew"
       changepassword_enabled: "true"
       changepassword_old: "manage"
+    networks:
+      - stack
+
+  config_loadbalancer_url:
+    image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
+    volumes:
+      - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
+      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-2:ro 
+    environment: 
+      connect_host: devportal
+      connect_port: "8083"
+      connect_user: Administrator
+      connect_password: "somethingnew"
+      settings_loadbalancerurl_configure: "true"
+      settings_loadbalancerurl_value: "http://external/portal"
     networks:
       - stack
 

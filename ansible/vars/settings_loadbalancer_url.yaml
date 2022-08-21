@@ -1,0 +1,11 @@
+---
+
+_loadbalancerurl_indices_finder_prefix: "settings_loadbalancerurl_"
+
+vars_loadbalancerurl_enabled: "{{ lookup('env', '%sconfigure' | format(_loadbalancerurl_indices_finder_prefix)) | default('false',true) }}"
+vars_loadbalancerurl_ignore_errors: "{{ lookup('env', '%sconfigure_ignore_errors' | format(_loadbalancerurl_indices_finder_prefix)) | default(vars_default_ignore_errors,true) }}"
+
+_loadbalancerurl_configuration_category: "UMC_GENERAL"
+_loadbalancerurl_template:
+  - key: "LOADBALANCER_URL"
+    value:  "{{ lookup('env', '%svalue' | format(_loadbalancerurl_indices_finder_prefix)) | default('',true) }}"

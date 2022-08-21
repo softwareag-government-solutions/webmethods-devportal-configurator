@@ -19,6 +19,11 @@ if [ "${changepassword_enabled}" == "true" ]; then
     exec_ansible_playbook update_password.yaml
 fi
 
+## update load balancer
+if [ "${settings_loadbalancerurl_configure}" == "true" ]; then
+    exec_ansible_playbook config_loadbalancer_url.yaml
+fi
+
 ## config users
 if [ "${settings_users_configure}" == "true" ]; then
     exec_ansible_playbook config_users.yaml
