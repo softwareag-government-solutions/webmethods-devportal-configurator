@@ -8,4 +8,4 @@ ln -s <LOCAL_PATH>/sagdevops-ansible-developer-portal ./resources/ansiblesagdevo
 
 ## Use DEV compose
 
-docker-compose -f dev/docker-compose.yml up -d devportal elasticsearch
+docker-compose  --env-file .env -f dev/docker-compose.yml up -d devportal elasticsearch
