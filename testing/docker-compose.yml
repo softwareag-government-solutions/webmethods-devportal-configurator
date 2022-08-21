@@ -24,7 +24,7 @@ services:
     networks:
       - stack
 
-  config_changepassword:
+  changepassword:
     image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
     environment: 
       connect_host: devportal

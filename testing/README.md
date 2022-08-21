@@ -7,12 +7,31 @@ I have prepared most actions into a simple docker-compose file to:
 
 The images used in this testing are the official SoftwareAG images for [Developper Portal](https://hub.docker.com/r/softwareag/devportal) so this should be a breeze to try.
 
-## start base components and change password
+## all-in-one: start dev portal and apply all configs
 
-docker-compose up -d devportal elasticsearch
+docker-compose up -d devportal elasticsearch config_allinone
 
-## system configs
+## apply system configs one by one
 
+### start dev portal
+
+docker-compose up -d devportal elasticsearch 
+
+### update password
+
+docker-compose up changepassword
+
+### save or update users
+
+docker-compose up config_users
+
+### save or update user groups
+
+docker-compose up config_usergroups
+
+### save or update teams
+
+docker-compose up config_teams
 
 Authors
 --------------------------------------------
