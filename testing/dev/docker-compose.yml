@@ -28,7 +28,7 @@ services:
     image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
     volumes:
       - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
-      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-2:ro 
+      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-3:ro 
     environment: 
       connect_host: devportal
       connect_port: "8083"
@@ -43,7 +43,7 @@ services:
     image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
     volumes:
       - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
-      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-2:ro 
+      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-3:ro 
     environment: 
       connect_host: devportal
       connect_port: "8083"
@@ -58,7 +58,7 @@ services:
     image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
     volumes:
       - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
-      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-2:ro 
+      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-3:ro 
     environment: 
       connect_host: devportal
       connect_port: "8083"
@@ -88,7 +88,7 @@ services:
     image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
     volumes:
       - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
-      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-2:ro 
+      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-3:ro 
     environment: 
       connect_host: devportal
       connect_port: "8083"
@@ -114,7 +114,7 @@ services:
     image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
     volumes:
       - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
-      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-2:ro 
+      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-3:ro 
     environment: 
       connect_host: devportal
       connect_port: "8083"
@@ -137,12 +137,16 @@ services:
     image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
     volumes:
       - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
-      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-2:ro 
+      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-3:ro 
     environment: 
       connect_host: devportal
       connect_port: "8083"
       connect_user: Administrator
       connect_password: "somethingnew"
+      changepassword_enabled: "true"
+      changepassword_old: "manage"
+      settings_loadbalancerurl_configure: "true"
+      settings_loadbalancerurl_value: "http://external/portal"
       settings_users_configure: "true"
       settings_users_0_userid: user1
       settings_users_0_password: password1

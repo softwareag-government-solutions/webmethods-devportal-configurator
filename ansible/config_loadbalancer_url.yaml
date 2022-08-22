@@ -24,6 +24,14 @@
   become_user: "{{ webmethods_user }}"
   run_once: true
   tasks:
+    
+    - ansible.builtin.debug:
+        var: "{{ item }}"
+        verbosity: 1
+      loop:
+        - vars_loadbalancerurl_enabled
+        - _loadbalancerurl_configuration_category
+        - _loadbalancerurl_template
 
     - include_role:
         name: developerportal-rest-configurator

@@ -36,6 +36,18 @@ services:
     networks:
       - stack
 
+  config_loadbalancer_url:
+    image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
+    environment: 
+      connect_host: devportal
+      connect_port: "8083"
+      connect_user: Administrator
+      connect_password: "somethingnew"
+      settings_loadbalancerurl_configure: "true"
+      settings_loadbalancerurl_value: "http://external/portal"
+    networks:
+      - stack
+
   config_users:
     image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
     environment: 
@@ -115,6 +127,8 @@ services:
       connect_password: "somethingnew"
       changepassword_enabled: "true"
       changepassword_old: "manage"
+      settings_loadbalancerurl_configure: "true"
+      settings_loadbalancerurl_value: "http://external/portal"
       settings_users_configure: "true"
       settings_users_0_userid: user1
       settings_users_0_password: password1

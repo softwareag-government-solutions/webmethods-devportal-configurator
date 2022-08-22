@@ -1,0 +1,143 @@
+version: "3.2"
+
+networks:
+  stack:
+
+volumes:
+  postgres_data:
+    driver: local
+
+services:
+
+  devportal:
+    image: ${REG_DEVPORTAL}${IMAGE_DEVPORTAL}:${TAG_DEVPORTAL}
+    ports:
+      - "8083:8083"
+    environment: 
+      SPRING_ELASTICSEARCH_REST_URIS: "http://elasticsearch:9200"
+    networks:
+      - stack
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:$TAG_ELASTIC_VERSION
+    environment:
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - http.port=9200
+      - transport.port=9300
+    networks:
+      - stack
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:15.1.1
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Pa55w0rd
+    ports:
+      - 8080:8080
+    networks:
+      - stack
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    networks:
+      - stack
+  
+  keycloak-config-cli:
+    image: quay.io/adorsys/keycloak-config-cli:latest-15.1.1
+    depends_on:
+      - keycloak
+    volumes:
+      - ../resources/saml/keycloak-imports:/configs:ro
+      - ../resources/certs:/certs:ro
+    environment:
+      KEYCLOAK_URL: http://keycloak:8080/auth
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Pa55w0rd
+      KEYCLOAK_AVAILABILITYCHECK_ENABLED: "true"
+      SPRING_PROFILES_ACTIVE: dev
+      IMPORT_CACHE_ENABLED: "false"
+      IMPORT_VARSUBSTITUTION_ENABLED: "true"
+      IMPORT_VARSUBSTITUTION_NESTED: "true"
+      IMPORT_VARSUBSTITUTION_UNDEFINEDISTERROR: "true"
+      IMPORT_FILES_LOCATIONS: "/configs/*"
+      IMPORT_REALM_NAME: "tenant1"
+      IMPORT_REALM_DISPLAYNAME: "tenant one"
+      IMPORT_SAML_DEVPORTAL_CLIENT_ID: "devportal-saml-client"
+      IMPORT_SAML_DEVPORTAL_CLIENT_NAME: "devportal saml client"
+      IMPORT_SAML_DEVPORTAL_ROOT_URL: "http://localhost:8083"
+      IMPORT_SAML_SIGNING_CERTIFICATE_FILEPATH: /certs/saml-raw.crt
+      IMPORT_SAML_ENCRYPTION_CERTIFICATE_FILEPATH: /certs/saml-raw.crt
+    networks:
+      - stack
+
+  config_saml:
+    image: ${REG_DEVPORTAL_CONFIGURATOR}webmethods-devportal-configurator:${TAG_DEVPORTAL_CONFIGURATOR}
+    volumes:
+      - ../resources/ansible/sagdevops-ansible-common:/ansible/roles/sagdevops-ansible-common-1.0.0-4:ro
+      - ../resources/ansible/sagdevops-ansible-developer-portal:/ansible/roles/sagdevops-ansible-developer-portal-1.0.0-3:ro 
+      - ../resources/certs:/certs:ro
+    environment: 
+      configurator_ansible_args: "-v"
+      connect_host: devportal
+      connect_port: "8083"
+      connect_user: Administrator
+      connect_password: "somethingnew"
+      changepassword_enabled: "true"
+      changepassword_old: "manage"
+      settings_usergroups_configure: "true"
+      settings_usergroups_0_name: "devportal-admin"
+      settings_usergroups_0_description: "admin group for saml users"
+      settings_usergroups_0_permissions_administrators: "true"
+      settings_usergroups_1_name: "devportal-apiprovider"
+      settings_usergroups_1_description: "provider group for saml users"
+      settings_usergroups_1_permissions_providers: "true"
+      settings_usergroups_2_name: "devportal-user"
+      settings_usergroups_2_description: "user group for saml users"
+      settings_usergroups_2_permissions_consumers: "true"
+      settings_saml_configure: "true"
+      settings_saml_active: "true"
+      settings_saml_tenant: "default"
+      settings_saml_create_user_if_missing: "true"
+      settings_saml_binding: "Redirect"
+      settings_saml_idp_id: "http://localhost:8080/auth/realms/tenant1"
+      settings_saml_idp_logout_url: "http://localhost:8080/auth/realms/tenant1/protocol/saml"
+      settings_saml_idp_url: "http://localhost:8080/auth/realms/tenant1/protocol/saml"
+      settings_saml_signature_algorithm: "RSAwithSHA256"
+      settings_saml_sign_request: "true"
+      settings_saml_sign_assertion: "false"
+      settings_saml_sign_metadata: "true"
+      settings_saml_sign_response: "false"
+      settings_saml_keystore_filepath: "/certs/saml.jks"
+      settings_saml_keystore_type: "JKS"
+      settings_saml_keystore_password: "manage"
+      settings_saml_keystore_alias: "certificate"
+      settings_saml_truststore_filepath: "/certs/saml-truststore.jks"
+      settings_saml_truststore_type: "JKS"
+      settings_saml_truststore_password: "manage"
+      settings_saml_truststore_alias: "certificate"
+      settings_saml_userattributes_email: "email"
+      settings_saml_userattributes_firstname: firstName
+      settings_saml_userattributes_lastname: lastName
+      settings_saml_userattributes_roles: "Role"
+      settings_saml_assertion_clock_skew_seconds: "1"
+      settings_saml_assertion_lifetime_seconds: "5"
+      settings_saml_sp_id: "devportal-saml-client"
+    networks:
+      - stack
+
+

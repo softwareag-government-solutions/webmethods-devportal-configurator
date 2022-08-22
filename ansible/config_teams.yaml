@@ -27,6 +27,7 @@
 
     - ansible.builtin.debug:
         var: "{{ item }}"
+        verbosity: 1
       loop:
         - _index_items_regex_pattern
         - _index_items

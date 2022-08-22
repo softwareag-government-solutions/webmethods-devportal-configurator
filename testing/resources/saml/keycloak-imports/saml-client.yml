@@ -1,0 +1,140 @@
+---
+realm: $(env:IMPORT_REALM_NAME)
+enabled: true
+groups:
+  - name: devportal-admins
+    clientRoles:
+      $(env:IMPORT_SAML_DEVPORTAL_CLIENT_ID):
+        - devportal-admin
+  - name: devportal-apiproviders
+    clientRoles:
+      $(env:IMPORT_SAML_DEVPORTAL_CLIENT_ID):
+        - devportal-apiprovider
+  - name: devportal-users
+    clientRoles:
+      $(env:IMPORT_SAML_DEVPORTAL_CLIENT_ID):
+        - devportal-user
+users:
+  - username: adminuser
+    email: adminuser@mail.us
+    enabled: true
+    firstName: admin
+    lastName: Tenant
+    credentials:
+      - type: password
+        userLabel: initial
+        temporary: true
+        value: changeme
+    groups:
+      - devportal-admins
+  - username: apiprovider
+    email: apiprovider@mail.us
+    enabled: true
+    firstName: apiprovider
+    lastName: Tenant
+    credentials:
+      - type: password
+        userLabel: initial
+        temporary: true
+        value: changeme
+    groups:
+      - devportal-apiproviders
+  - username: user
+    email: user@mail.us
+    enabled: true
+    firstName: user
+    lastName: Tenant
+    credentials:
+      - type: password
+        userLabel: initial
+        temporary: true
+        value: changeme
+    groups:
+      - devportal-users
+roles:
+  client:
+    $(env:IMPORT_SAML_DEVPORTAL_CLIENT_ID):
+      - name: devportal-user
+        description: devportal read-only users
+        composite: false
+        clientRole: true
+        attributes: {}
+      - name: devportal-apiprovider
+        description: devportal api provider
+        composite: false
+        clientRole: true
+        attributes: {}
+      - name: devportal-admin
+        description: devportal admin user
+        composite: false
+        clientRole: true
+        attributes: {}
+clients:
+  - clientId: $(env:IMPORT_SAML_DEVPORTAL_CLIENT_ID)
+    name: $(env:IMPORT_SAML_DEVPORTAL_CLIENT_NAME)
+    description: SAML Client for webmethods Developer Portal
+    enabled: true
+    clientAuthenticatorType: client-secret
+    protocol: saml
+    rootUrl: $(env:IMPORT_SAML_DEVPORTAL_ROOT_URL)
+    adminUrl: $(env:IMPORT_SAML_DEVPORTAL_ROOT_URL)/portal/rest/v1/saml/initsso
+    baseUrl: "/portal"
+    surrogateAuthRequired: false
+    alwaysDisplayInConsole: false
+    redirectUris:
+      - "/portal/rest/v1/saml/initsso"
+    notBefore: 0
+    bearerOnly: false
+    consentRequired: false
+    standardFlowEnabled: true
+    implicitFlowEnabled: false
+    directAccessGrantsEnabled: false
+    serviceAccountsEnabled: false
+    publicClient: false
+    frontchannelLogout: true
+    defaultClientScopes:
+      - role_list
+    attributes:
+      saml.force.post.binding: "false"
+      saml.signing.certificate: "$(file:UTF-8:$(env:IMPORT_SAML_SIGNING_CERTIFICATE_FILEPATH))"
+      saml.encryption.certificate: "$(file:UTF-8:$(env:IMPORT_SAML_ENCRYPTION_CERTIFICATE_FILEPATH))"
+      saml.signature.algorithm: RSA_SHA256
+      saml.client.signature: "false"
+      saml.assertion.signature: "true"
+      saml.encrypt: "false"
+      saml.server.signature: "true"
+      saml.artifact.binding: "false"
+      saml_force_name_id_format: "false"
+      saml.authnstatement: "true"
+      saml_name_id_format: username
+      saml_signature_canonicalization_method: http://www.w3.org/2001/10/xml-exc-c14n#
+      saml.onetimeuse.condition: "false"
+    fullScopeAllowed: false
+    protocolMappers:
+      - name: email-mapper
+        protocol: saml
+        protocolMapper: saml-user-attribute-mapper
+        consentRequired: false
+        config:
+          attribute.nameformat: Basic
+          user.attribute: email
+          friendly.name: Email
+          attribute.name: email
+      - name: firstName-mapper
+        protocol: saml
+        protocolMapper: saml-user-attribute-mapper
+        consentRequired: false
+        config:
+          attribute.nameformat: Basic
+          user.attribute: firstName
+          friendly.name: firstName
+          attribute.name: firstName
+      - name: lastName-mapper
+        protocol: saml
+        protocolMapper: saml-user-attribute-mapper
+        consentRequired: false
+        config:
+          attribute.nameformat: Basic
+          user.attribute: lastName
+          friendly.name: lastName
+          attribute.name: lastName

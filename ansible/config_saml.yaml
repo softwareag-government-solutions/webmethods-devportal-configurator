@@ -1,0 +1,60 @@
+---
+
+################################################################
+## Load the needed vars
+################################################################
+
+- name: Load vars
+  hosts: local
+  tasks:
+    - name: Include all vars files
+      include_vars:
+        file: "{{ item }}"
+      with_fileglob:
+        - vars/common.yaml
+        - vars/rest_connect.yaml
+        - vars/settings_saml.yaml
+
+################################################################
+## set configs via REST APIs
+################################################################
+
+- hosts: local
+  become: true
+  become_user: "{{ webmethods_user }}"
+  run_once: true
+  tasks:
+
+    - ansible.builtin.debug:
+        var: "{{ item }}"
+        verbosity: 1
+      loop:
+        - _saml_enabled
+        - _saml_configuration_category
+        - _saml_keystore_location
+        - _saml_truststore_location
+        - _saml_template
+    
+    - include_role:
+        name: developerportal-rest-configurator
+      vars:
+        configs_action: configurations/saml/upload-keystore
+        configs_enabled: "{{ _saml_enabled }}"
+        rvar_devportal_keystore_filepath: "{{ _saml_keystore_location }}"
+      when: _saml_keystore_location is defined and _saml_keystore_location | trim != ""
+    
+    - include_role:
+        name: developerportal-rest-configurator
+      vars:
+        configs_action: configurations/saml/upload-truststore
+        configs_enabled: "{{ _saml_enabled }}"
+        rvar_devportal_truststore_filepath: "{{ _saml_truststore_location }}"
+      when: _saml_truststore_location is defined and _saml_truststore_location | trim != ""
+
+    - include_role:
+        name: developerportal-rest-configurator
+      vars:
+        configs_action: configurations/update
+        configs_enabled: "{{ _saml_enabled }}"
+        rvar_devportal_rest_configs_category: "{{ _saml_configuration_category }}"
+        rvar_devportal_rest_configs_kv_list: "{{ _saml_template }}"

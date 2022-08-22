@@ -1,0 +1,205 @@
+---
+_saml_indices_finder_prefix: "settings_saml_"
+_saml_enabled: "{{ lookup('env', '%sconfigure' | format(_saml_indices_finder_prefix)) | default('false',true) }}"
+_saml_ignore_errors: "{{ lookup('env', '%sconfigure_ignore_errors' | format(_saml_indices_finder_prefix)) | default(vars_default_ignore_errors,true) }}"
+
+# NOTE: 
+# encrypt sp saml request not working / supported by dev portal... (because error if keycloak enforces signed request)
+# encrypt assertion not working / supported by dev portal... (because error in dev portal if encrypted)
+
+_saml_configuration_category: "SAML"
+
+## special handling for the keystore/truststore uploads
+_saml_keystore_location: "{{ lookup('env', '%skeystore_filepath' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+_saml_truststore_location: "{{ lookup('env', '%struststore_filepath' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+_saml_template:
+  - key: SAML_ACTIVE
+    value: "{{ lookup('env', '%sactive' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_TENANT
+    value: "{{ lookup('env', '%stenant' | format(_saml_indices_finder_prefix)) | default('default',true) }}"
+  - key: SAML_BINDING
+    value: "{{ lookup('env', '%sbinding' | format(_saml_indices_finder_prefix)) | default('Redirect',true) }}"
+  - key: SAML_IDENTITY_PROVIDER_ID
+    value: "{{ lookup('env', '%sidp_id' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_IDENTITY_PROVIDER_LOGOUT_URL
+    value: "{{ lookup('env', '%sidp_logout_url' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_IDENTITY_PROVIDER_SSO_URL
+    value: "{{ lookup('env', '%sidp_url' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_SIGNATURE_ALGORITHM
+    value: "{{ lookup('env', '%ssignature_algorithm' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_SIGN_REQUEST
+    value: "{{ lookup('env', '%ssign_request' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_SIGN_ASSERTION
+    value: "{{ lookup('env', '%ssign_assertion' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_SIGN_METADATA
+    value: "{{ lookup('env', '%ssign_metadata' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_SIGN_RESPONSE
+    value: "{{ lookup('env', '%ssign_response' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_KEYSTORE_TYPE
+    value: "{{ lookup('env', '%skeystore_type' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_KEYSTORE_PASSWORD
+    value: "{{ lookup('env', '%skeystore_password' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_KEYSTORE_ALIAS
+    value: "{{ lookup('env', '%skeystore_alias' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_TRUSTSTORE_TYPE
+    value: "{{ lookup('env', '%struststore_type' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_TRUSTSTORE_PASSWORD
+    value: "{{ lookup('env', '%struststore_password' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_TRUSTSTORE_ALIAS
+    value: "{{ lookup('env', '%struststore_alias' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ATTRIB_EMAIL
+    value: "{{ lookup('env', '%suserattributes_email' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ATTRIB_FNAME
+    value: "{{ lookup('env', '%suserattributes_firstname' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ATTRIB_LNAME
+    value: "{{ lookup('env', '%suserattributes_lastname' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ATTRIB_PHONE
+    value: "{{ lookup('env', '%suserattributes_phone' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ATTRIB_USERDEFINED
+    value: "{{ lookup('env', '%suserattributes_userdefined' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ATTRIB_MEMBEROF
+    value: "{{ lookup('env', '%suserattributes_roles' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ASSERTION_FNAMEATTRIBUTE_NAME
+    value: "{{ lookup('env', '%suserattributes_firstname' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ASSERTION_LNAMEATTRIBUTE_NAME
+    value: "{{ lookup('env', '%suserattributes_lastname' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ASSERTION_ROLEATTRIBUTE_NAME
+    value: "{{ lookup('env', '%suserattributes_roles' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ASSERTION_EMAILATTRIBUTE_NAME
+    value: "{{ lookup('env', '%suserattributes_email' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ASSERTION_AS_QUERYSTRING
+    value: "{{ lookup('env', '%sassertion_as_querystring' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ASSERTION_TIMEOFFSET
+    value: "{{ lookup('env', '%sassertion_clock_skew_seconds' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ASSERTION_VALIDATION
+    value: "{{ lookup('env', '%sassertion_validation' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ASSERTION_SUBDOMAINATTRIBUTE_NAME
+    value: "{{ lookup('env', '%sassertion_subdomainattribute_name' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ASSERTION_CONSUMER_URL
+    value: "{{ lookup('env', '%sassertion_consumer_url' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ASSERTION_LIFETIME
+    value: "{{ lookup('env', '%sassertion_lifetime_seconds' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_ASSERTION_COOKIE_DOMAIN
+    value: "{{ lookup('env', '%sassertion_cookie_domain' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_LOGIN_MODE_DN
+    value: "{{ lookup('env', '%slogin_using_dn' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_LOGIN_MODE_KEYWORD
+    value: "{{ lookup('env', '%slogin_using_keyword' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_LOGIN_KEYWORD_NAME
+    value: "{{ lookup('env', '%slogin_keyword' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_EXTENSION_ENABLE
+    value: "{{ lookup('env', '%sextension_enabled' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_EXTENSION_FOR_ROLES
+    value: "{{ lookup('env', '%sextension_for_roles' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_SERVICE_PROVIDER_ID
+    value: "{{ lookup('env', '%ssp_id' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_SERVICE_PROVIDER_URLS
+    value: "{{ lookup('env', '%ssp_url' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_AUTH_CTX_COMPARISON
+    value: "{{ lookup('env', '%sauth_context_compare_type' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_AUTH_NAMEID_FORMAT
+    value: "{{ lookup('env', '%sauth_nameid_format' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_AUTH_CTX_CLASS_REFS
+    value: "{{ lookup('env', '%sauth_context_class_refs' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+  - key: SAML_CREATE_USER_IF_MISSING
+    value: "{{ lookup('env', '%screate_user_if_missing' | format(_saml_indices_finder_prefix)) | default('NULL',true) }}"
+
+# params that work
+#
+# - documentType: CONFIGURATION
+#   category: SAML
+#   properties:
+#   - key: SAML_KEYSTORE_TYPE
+#     value: JKS
+#   - key: SAML_ASSERTION_AS_QUERYSTRING
+#     value: ''
+#   - key: SAML_ASSERTION_TIMEOFFSET
+#     value: '0'
+#   - key: SAML_ATTRIB_EMAIL
+#     value: email
+#   - key: SAML_SIGN_RESPONSE
+#     value: 'true'
+#   - key: SAML_IDENTITY_PROVIDER_ID
+#     value: http://localhost:8080/auth/realms/tenant1
+#   - key: SAML_ATTRIB_FNAME
+#     value: firstName
+#   - key: SAML_ASSERTION_VALIDATION
+#     value: 'false'
+#   - key: SAML_KEYSTORE_PASSWORD
+#     value: manage
+#   - key: SAML_ATTRIB_LNAME
+#     value: lastName
+#   - key: SAML_TRUSTSTORE_PASSWORD
+#     value: manage
+#   - key: SAML_ASSERTION_SUBDOMAINATTRIBUTE_NAME
+#     value: subdomain
+#   - key: SAML_ASSERTION_CONSUMER_URL
+#     value: ''
+#   - key: SAML_TENANT
+#     value: default
+#   - key: SAML_EXTENSION_ENABLE
+#     value: 'false'
+#   - key: SAML_ASSERTION_LNAMEATTRIBUTE_NAME
+#     value: lastName
+#   - key: SAML_EXTENSION_FOR_ROLES
+#     value: com.softwareag.portal.umc.authentication.saml.SAMLExtension
+#   - key: SAML_ASSERTION_LIFETIME
+#     value: '10'
+#   - key: SAML_SIGNATURE_ALGORITHM
+#     value: RSAwithSHA256
+#   - key: SAML_ATTRIB_PHONE
+#     value: ''
+#   - key: SAML_SERVICE_PROVIDER_URLS
+#     value: ''
+#   - key: SAML_ASSERTION_FNAMEATTRIBUTE_NAME
+#     value: firstName
+#   - key: SAML_AUTH_CTX_COMPARISON
+#     value: Password
+#   - key: SAML_AUTH_NAMEID_FORMAT
+#     value: unspecified
+#   - key: SAML_KEYSTORE_ALIAS
+#     value: certificate
+#   - key: SAML_TRUSTSTORE_TYPE
+#     value: JKS
+#   - key: SAML_TRUSTSTORE_LOCATION
+#     value: com.softwareag.portal.umc.saml.truststore.location10265244256336014520.tmp
+#   - key: SAML_AUTH_CTX_CLASS_REFS
+#     value: unspecified,PasswordProtectedTransport
+#   - key: SAML_BINDING
+#     value: Redirect
+#   - key: SAML_ASSERTION_COOKIE_DOMAIN
+#     value: ''
+#   - key: SAML_LOGIN_KEYWORD_NAME
+#     value: uid
+#   - key: SAML_SERVICE_PROVIDER_ID
+#     value: devportal-saml-client
+#   - key: SAML_SIGN_ASSERTION
+#     value: 'true'
+#   - key: SAML_LOGIN_MODE_DN
+#     value: 'false'
+#   - key: SAML_IDENTITY_PROVIDER_LOGOUT_URL
+#     value: http://localhost:8080/auth/realms/tenant1/protocol/saml
+#   - key: SAML_ACTIVE
+#     value: 'true'
+#   - key: SAML_KEYSTORE_LOCATION
+#     value: com.softwareag.portal.umc.saml.keystore.location11425153420820075370.tmp
+#   - key: SAML_IDENTITY_PROVIDER_SSO_URL
+#     value: http://localhost:8080/auth/realms/tenant1/protocol/saml
+#   - key: SAML_SIGN_METADATA
+#     value: 'true'
+#   - key: SAML_ATTRIB_USERDEFINED
+#     value: ''
+#   - key: SAML_TRUSTSTORE_ALIAS
+#     value: certificate
+#   - key: SAML_CREATE_USER_IF_MISSING
+#     value: 'true'
+#   - key: SAML_SIGN_REQUEST
+#     value: 'true'
+#   - key: SAML_ATTRIB_MEMBEROF
+#     value: Role
+#   - key: SAML_ASSERTION_ROLEATTRIBUTE_NAME
+#     value: APICloudAccessPermissionsSet
+#   - key: SAML_ASSERTION_EMAILATTRIBUTE_NAME
+#     value: email
+#   - key: SAML_LOGIN_MODE_KEYWORD
+#     value: 'false'

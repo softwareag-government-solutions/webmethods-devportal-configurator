@@ -1,0 +1,5 @@
+---
+realm: $(env:IMPORT_REALM_NAME)
+enabled: true
+displayName: $(env:IMPORT_REALM_DISPLAYNAME)
+displayNameHtml: '<div class=\"kc-logo-text\"><span>$(env:IMPORT_REALM_DISPLAYNAME)</span></div>'
