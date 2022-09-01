@@ -5,7 +5,17 @@ All inputs to the container are environment variables for easy usage.
 
 ## Supported Configs / Actions
 
-Doc TBD
+The following configuration items / actions are currently supported (new functions added as needed)
+
+- availability checker (wait for devportal to be available on target port + response to app ping check -- NOTE: this checker is enable on all actions by default)
+- update admin password
+- set/update  external loadbalancer urls
+- create/update users
+- create/update groups (and assign the users)
+- create/update teams
+- set/update SAML configs
+
+Head over to [Using/Testing the webmethods-devportal-configurator](./testing/README.md) for a detail tutorial on how to use the configurator to apply all the supported config items.
 
 ## Build the container image
 

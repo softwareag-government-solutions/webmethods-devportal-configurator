@@ -7,31 +7,93 @@ I have prepared most actions into a simple docker-compose file to:
 
 The images used in this testing are the official SoftwareAG images for [Developper Portal](https://hub.docker.com/r/softwareag/devportal) so this should be a breeze to try.
 
-## all-in-one: start dev portal and apply all configs
+## Build the container image
 
-docker-compose up -d devportal elasticsearch config_allinone
+Go at the root of the project, and run:
 
-## apply system configs one by one
+```bash
+docker build -t softwareag-government-solutions/webmethods-devportal-configurator:10.11-latest --build-arg BASE_IMAGE=redhat/ubi8 .
+```
 
-### start dev portal
+This should build a local image labelled: softwareag-government-solutions/webmethods-devportal-configurator:10.11-latest
 
-docker-compose up -d devportal elasticsearch 
+## Start default SoftwareAG API management stack
+
+Here, we're pulling the default container images by SoftwareAG from DockerHub, ie.
+IMAGE_DEVPORTAL=softwareag/devportal
+
+Check the [.env](./.env) for more details on that.
+
+```bash
+docker-compose up -d devportal elasticsearch
+```
+
+Wait for the stack to come up...once loaded, the UIs shoudl be available:
+- Developer Portal: http://localhost:8083/portal/
+
+You can login with default passwords etc... and nothing is configured at this point.
+
+## All-in-one: Apply all system configs and all sample data in 1 batch
+
+Here we're applying it all in 1 single configurator batch...which could be the possible way to do it in an automated environment.
+
+```bash
+docker-compose up -d config_allinone
+```
+
+## Manual apply: execute each system configs one at a time
+
+### configure load balancer url
+
+```bash
+docker-compose up config_loadbalancer_url
+```
 
 ### update password
 
+```bash
 docker-compose up changepassword
+```
 
 ### save or update users
 
+```bash
 docker-compose up config_users
+```
 
 ### save or update user groups
 
+```bash
 docker-compose up config_usergroups
+```
 
 ### save or update teams
 
+```bash
 docker-compose up config_teams
+```
+
+## Clean up
+
+```bash
+docker-compose down -v
+```
+
+## Configure saml
+
+For this one, since it involves more external components specific to SAML (ie. keycloak IDP), we created a specific compose file
+
+Simply run:
+
+```bash
+docker-compose -f docker-compose-saml.yml up -d
+```
+
+Cleanup:
+
+```bash
+docker-compose -f docker-compose-saml.yml down -v
+```
 
 
 Authors
