@@ -1,7 +1,8 @@
 # webmethods-devportal-configurator
 
-A container that can easily configure various functions of webMethods Developer Portal over REST APIs.
-All inputs to the container are environment variables for easy usage.
+A container that can easily configure various functions of SoftwareAG webMethods Developer Portal from environment variable values passed in.
+
+As a high level description of how it works, this container strictly uses REST calls to the webMethods Developer Portal System APIs to perform all its functions.
 
 ## Supported Configs / Actions
 
