@@ -4,6 +4,10 @@ A container that can easily configure various functions of SoftwareAG webMethods
 
 As a high level description of how it works, this container strictly uses REST calls to the webMethods Developer Portal System APIs to perform all its functions.
 
+## Resources
+
+Open-Source GitHub project with detailed descriptions: https://github.com/softwareag-government-solutions/webmethods-devportal-configurator
+
 ## Supported Configs / Actions
 
 The following configuration items / actions are currently supported (new functions added as needed)
