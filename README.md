@@ -22,15 +22,22 @@ The following configuration items / actions are currently supported (new functio
 
 Head over to [Using/Testing the webmethods-devportal-configurator](./testing/README.md) for a detail tutorial on how to use the configurator to apply all the supported config items.
 
-## Build the container image
-
-docker build -t softwareag-government-solutions/webmethods-devportal-configurator:10.11-latest --build-arg BASE_IMAGE=redhat/ubi8 .
-
 ## How it's made
 
 To build on the ansible roles already created for webMethods Developer Portal, this container also uses Ansible to operate the various REST calls (important to note that to respect container immutability, ansible is NOT used to "remote" into the devportal container in order to update files etc...)
 
 For the various REST calls, this project makes use of the existing Ansible roles [sagdevops-ansible-developer-portal](https://github.com/SoftwareAG/sagdevops-ansible-developer-portal) to perform all the needed REST calls to webMethods Developer Portal.
+
+## Building the container image
+
+The image is published on DockerHub at: https://hub.docker.com/r/saggs/webmethods-devportal-configurator
+
+But if you want to try anbd build it yourself, a simple command is:
+
+```bash
+docker build -t saggs/webmethods-devportal-configurator:10.11 --build-arg BASE_IMAGE=redhat/ubi8 .
+```
+
 
 Authors
 --------------------------------------------
