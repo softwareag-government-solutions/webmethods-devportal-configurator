@@ -101,7 +101,6 @@ RUN set -x \
     && tar xvf /tmp/${SAG_ANSIBLE_ROLES_DEVPORTAL_FILENAME}.tar.gz -C ${ANSIBLE_ROLES_BASEPATH}
 
 # 3. Finalize the image
-# this creates an image of approx 2.20GiB (un-compressed)
 ######################################################################################################
 
 FROM base_ansible_with_roles as final
