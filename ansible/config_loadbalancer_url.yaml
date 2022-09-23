@@ -20,9 +20,6 @@
 ################################################################
 
 - hosts: local
-  become: true
-  become_user: "{{ webmethods_user }}"
-  run_once: true
   tasks:
     
     - ansible.builtin.debug:
